@@ -5,14 +5,20 @@ function fetch_and_display_posts()
     xhr.open("GET", "http://iflyk12.com/wp-admin/admin-ajax.php?action=posts");
     xhr.onload = function(){ 
 	var postsj = JSON.parse(xhr.responseText);
-//	navigator.notification.alert("dfafsa", null, "Wrong Creds", "Try Again");
+//	navigator.notification.alert("dfafsa", null, postsj.length, "Try Again");
 	var html = "";
 	for(var count = 0; count < postsj.length; count++)
         {
-        	var title = postsj[count].title;
-        	var link = postsj[count].link;
-        	var date = postsj[count].date;
-        	html = html + "<li>" + "<a href='javascript:open_browser(\"" + link + "\")'>"  + "<h2>" + title + "</h2>" + "<p>" + date + "</p></a></li>";
+//        	var title = postsj[count].title;
+//        	var link = postsj[count].link;
+//        	var date = postsj[count].date;
+//	    navigator.notification.alert("title", null, co, "date");
+            var title = postsj[count][0];
+            var link = postsj[count][1];
+            var date = postsj[count][2];
+            var image = postsj[count][3];
+//            html = html + "<li>" + "<a href='javascript:open_browser(\"" + link + "\")'>"  + "<h2>" + title + "</h2>" + "<p>" + date + "</p></a></li>"; 
+            html = html + "<li>" + "<a href='javascript:open_browser(\"" + link + "\")'>" + "<img height='128' width='128' src='" + image + "'>" + "<h2>" + title + "</h2>" + "<p>" + date + "</p></a></li>";
  	}
         document.getElementById("posts").innerHTML = html;
         $("#posts").listview("refresh");

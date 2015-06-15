@@ -5,6 +5,99 @@
         <meta name="viewport" content="user-scalable=no, initial-scale=1, maximum-scale=1, minimum-scale=1, width=device-width, height=device-height" />
         <title>Sitepoint - PhoneGap App using WordPress</title>
         <link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.4/jquery.mobile-1.4.4.min.css">
+    <script type="text/javascript" charset="utf-8">
+
+    var pictureSource;   // picture source
+    var destinationType; // sets the format of returned value
+
+    // Wait for device API libraries to load
+    //
+    document.addEventListener("deviceready",onDeviceReady,false);
+
+    // device APIs are available
+    //
+    function onDeviceReady() {
+        pictureSource=navigator.camera.PictureSourceType;
+        destinationType=navigator.camera.DestinationType;
+    }
+
+    // Called when a photo is successfully retrieved
+    //
+    function onPhotoDataSuccess(imageData) {
+      // Uncomment to view the base64-encoded image data
+      // console.log(imageData);
+
+      // Get image handle
+      //
+      var smallImage = document.getElementById('smallImage');
+
+      // Unhide image elements
+      //
+      smallImage.style.display = 'block';
+
+      // Show the captured photo
+      // The in-line CSS rules are used to resize the image
+      //
+      smallImage.src = "data:image/jpeg;base64," + imageData;
+    }
+
+    // Called when a photo is successfully retrieved
+    //
+    function onPhotoURISuccess(imageURI) {
+      // Uncomment to view the image file URI
+      // console.log(imageURI);
+
+      // Get image handle
+      //
+      var largeImage = document.getElementById('largeImage');
+
+      // Unhide image elements
+      //
+      largeImage.style.display = 'block';
+
+      // Show the captured photo
+      // The in-line CSS rules are used to resize the image
+      //
+      largeImage.src = imageURI;
+    }
+
+    // A button will call this function
+    //
+    function capturePhoto() {
+      // Take picture using device camera and retrieve image as base64-encoded string
+      navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 50,
+        destinationType: destinationType.DATA_URL });
+    }
+
+    // A button will call this function
+    //
+    function capturePhotoEdit() {
+      // Take picture using device camera, allow edit, and retrieve image as base64-encoded string
+      navigator.camera.getPicture(onPhotoDataSuccess, onFail, { quality: 20, allowEdit: true,
+        destinationType: destinationType.DATA_URL });
+    }
+
+    // A button will call this function
+    //
+    function getPhoto(source) {
+ //     setTimeout(function() {
+    // do your thing here!
+//      navigator.notification.alert("dfafsa", null, "fdsf", "Try Again");
+//      }, 0);
+      
+      // Retrieve image file location from specified source
+      navigator.camera.getPicture(onPhotoURISuccess, onFail, { quality: 50,
+        destinationType: destinationType.FILE_URI,
+        sourceType: source });
+    }
+
+    // Called if something bad happens.
+    //
+    function onFail(message) {
+      alert('Failed because: ' + message);
+    }
+
+    </script>
     </head>
     <body>
         <div data-role="page"  id="pageone">
@@ -30,12 +123,32 @@
             <div data-role="header" data-position="fixed">
                 <h1>Posts2</h1>
 		<a href="#pageone">link</a>
+		<a href="#pagethree">picture</a>
             </div>
  
             <div data-role="main" class="ui-content">
 		<a href="#pageone" id="page_one_link"> login</a>
                 <ul data-role="listview" id="posts">                 
                 </ul>
+            </div>
+ 
+            <div data-role="footer" data-position="fixed">
+                <h1>Made by @jhkang-cn</h1>
+            </div>
+        </div> 
+        <div data-role="page" id="pagethree">
+            <div data-role="header" data-position="fixed">
+                <h1>Posts2</h1>
+		<a href="#pageone">link</a>
+		<a href="#pagetwo">posts</a>
+            </div> 
+            <div data-role="main" class="ui-content">
+		<button onclick="capturePhoto();">Capture Photo</button> <br>
+    		<button onclick="capturePhotoEdit();">Capture Editable Photo</button> <br>
+    		<button onclick="getPhoto(pictureSource.PHOTOLIBRARY);">From Photo Library</button><br>
+    		<button onclick="getPhoto(pictureSource.SAVEDPHOTOALBUM);">From Photo Album</button><br>
+    		<img style="display:none;width:60px;height:60px;" id="smallImage" src="" />
+    		<img style="display:none;" id="largeImage" src="" />
             </div>
  
             <div data-role="footer" data-position="fixed">

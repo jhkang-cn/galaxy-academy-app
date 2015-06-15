@@ -4,10 +4,39 @@
         "uninstalled": []
     },
     "config_munge": {
-        "files": {}
+        "files": {
+            "package.windows.appxmanifest": {
+                "parents": {
+                    "/Package/Capabilities": []
+                }
+            },
+            "package.windows80.appxmanifest": {
+                "parents": {
+                    "/Package/Capabilities": []
+                }
+            },
+            "package.phone.appxmanifest": {
+                "parents": {
+                    "/Package/Capabilities": []
+                }
+            },
+            "package.appxmanifest": {
+                "parents": {
+                    "/Package/Capabilities": [
+                        {
+                            "xml": "<DeviceCapability Name=\"webcam\" />",
+                            "count": 1
+                        }
+                    ]
+                }
+            }
+        }
     },
     "installed_plugins": {
         "cordova-plugin-whitelist": {
+            "PACKAGE_NAME": "HelloWorld"
+        },
+        "cordova-plugin-camera": {
             "PACKAGE_NAME": "HelloWorld"
         }
     },
